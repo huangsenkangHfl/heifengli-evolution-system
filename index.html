@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="黑凤梨">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>黑凤梨进化系统</title>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">AI Signal Board</p>
+          <h1>黑凤梨进化系统</h1>
+        </div>
+        <button id="refreshButton" class="icon-button" type="button" aria-label="刷新">刷新</button>
+      </div>
+      <p class="subtitle">给手机看的 AI 行业动态雷达。重点盯 AIGC、Agent、Codex、视频生成和职业趋势。</p>
+      <div class="status-grid" aria-label="数据状态">
+        <article>
+          <span>数据范围</span>
+          <strong id="rangeText">最近 7 天</strong>
+        </article>
+        <article>
+          <span>当前条目</span>
+          <strong id="countText">0</strong>
+        </article>
+        <article>
+          <span>缓存状态</span>
+          <strong id="cacheText">未读取</strong>
+        </article>
+      </div>
+    </header>
+
+    <section id="corsNotice" class="notice hidden" aria-live="polite"></section>
+
+    <nav class="filter-bar" aria-label="筛选标签">
+      <button class="filter-chip active" type="button" data-filter="all">全部</button>
+      <button class="filter-chip" type="button" data-filter="AIGC">AIGC</button>
+      <button class="filter-chip" type="button" data-filter="视频生成">视频生成</button>
+      <button class="filter-chip" type="button" data-filter="图像生成">图像生成</button>
+      <button class="filter-chip" type="button" data-filter="Codex">Codex</button>
+      <button class="filter-chip" type="button" data-filter="Agent">Agent</button>
+      <button class="filter-chip" type="button" data-filter="OpenAI">OpenAI</button>
+      <button class="filter-chip" type="button" data-filter="Claude">Claude</button>
+      <button class="filter-chip" type="button" data-filter="Gemini">Gemini</button>
+      <button class="filter-chip" type="button" data-filter="求职 / 职业趋势">求职 / 职业趋势</button>
+    </nav>
+
+    <section class="section-head">
+      <h2>今日值得扫一眼</h2>
+      <p id="updatedText">准备读取公开数据源。</p>
+    </section>
+
+    <section id="cards" class="cards" aria-live="polite"></section>
+
+    <section id="emptyState" class="empty hidden">
+      <h2>暂时没有命中</h2>
+      <p>可以切换到“全部”，或稍后刷新。AI HOT 精选池可能暂时没有这个方向的新条目。</p>
+    </section>
+  </main>
+
+  <template id="cardTemplate">
+    <article class="news-card">
+      <div class="card-meta">
+        <span class="category"></span>
+        <span class="time"></span>
+      </div>
+      <h3></h3>
+      <p class="summary"></p>
+      <div class="signal-row">
+        <span class="usefulness"></span>
+        <span class="source"></span>
+      </div>
+      <div class="tag-row"></div>
+      <a class="source-link" target="_blank" rel="noopener noreferrer">查看原文</a>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "黑凤梨进化系统",
+  "short_name": "黑凤梨",
+  "description": "手机端 AI 行业动态看板，关注 AIGC、Agent、Codex、视频生成和职业趋势。",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0b1020",
+  "background_color": "#050813",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
