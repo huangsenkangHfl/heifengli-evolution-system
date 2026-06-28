@@ -17,9 +17,12 @@
   <main class="app-shell">
     <header class="hero">
       <div class="hero-top">
-        <div>
-          <p class="eyebrow">AI Signal Board</p>
-          <h1>黑凤梨进化系统</h1>
+        <div class="brand-row">
+          <img id="appIcon" class="app-icon" src="icons/icon-192.png" alt="黑凤梨图标">
+          <div>
+            <p class="eyebrow">AI Signal Board</p>
+            <h1>黑凤梨进化系统</h1>
+          </div>
         </div>
         <button id="refreshButton" class="icon-button" type="button" aria-label="刷新">刷新</button>
       </div>
@@ -39,6 +42,15 @@
         </article>
       </div>
     </header>
+
+    <section class="settings-panel" aria-labelledby="settingsTitle">
+      <div>
+        <h2 id="settingsTitle">设置</h2>
+        <p id="iconStatus" class="settings-status" aria-live="polite">当前使用默认图标。</p>
+      </div>
+      <label class="upload-button" for="iconUpload">上传图标</label>
+      <input id="iconUpload" class="file-input" type="file" accept="image/png,image/jpeg,image/webp">
+    </section>
 
     <section id="corsNotice" class="notice hidden" aria-live="polite"></section>
 

@@ -59,6 +59,24 @@ a {
   gap: 12px;
 }
 
+.brand-row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 12px;
+}
+
+.app-icon {
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+}
+
 .eyebrow {
   margin: 0 0 6px;
   color: var(--accent-2);
@@ -123,6 +141,51 @@ h1 {
   margin-top: 5px;
   font-size: 15px;
   line-height: 1.25;
+}
+
+.settings-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(16, 24, 39, 0.78);
+}
+
+.settings-panel h2 {
+  font-size: 16px;
+}
+
+.settings-status {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.upload-button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 0 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .notice {
@@ -320,6 +383,30 @@ h1 {
   .status-grid article {
     min-height: 78px;
     padding: 9px;
+  }
+
+  .hero-top {
+    align-items: flex-start;
+  }
+
+  .brand-row {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .settings-panel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .upload-button {
+    width: 100%;
   }
 
   .section-head {

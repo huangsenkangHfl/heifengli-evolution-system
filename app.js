@@ -1,7 +1,11 @@
 const API_BASE = "https://aihot.virxact.com/api/public/items";
 const CACHE_KEY = "heifengli:evolution:v1:items";
 const CACHE_TIME_KEY = "heifengli:evolution:v1:updatedAt";
+const ICON_KEY = "heifengli:evolution:v1:customIcon";
+const DEFAULT_ICON_SRC = "icons/icon-192.png";
+const ICON_CANVAS_SIZE = 192;
 const MAX_CACHE_DAYS = 7;
+const ACCEPTED_ICON_TYPES = new Set(["image/png", "image/jpeg", "image/webp"]);
 
 const FILTERS = {
   AIGC: ["aigc", "生成式", "生成式 ai", "内容生成", "创作"],
@@ -52,12 +56,111 @@ const updatedText = document.querySelector("#updatedText");
 const corsNotice = document.querySelector("#corsNotice");
 const emptyState = document.querySelector("#emptyState");
 const refreshButton = document.querySelector("#refreshButton");
+const appIcon = document.querySelector("#appIcon");
+const iconUpload = document.querySelector("#iconUpload");
+const iconStatus = document.querySelector("#iconStatus");
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupIconUpload();
   setupFilters();
   refreshButton.addEventListener("click", () => loadData({ force: true }));
   loadData();
 });
+
+function setupIconUpload() {
+  restoreCustomIcon();
+  iconUpload.addEventListener("change", handleIconUpload);
+}
+
+function restoreCustomIcon() {
+  const savedIcon = localStorage.getItem(ICON_KEY);
+  if (savedIcon) {
+    applyIcon(savedIcon, "已使用自定义图标。");
+    return;
+  }
+  applyIcon(DEFAULT_ICON_SRC, "当前使用默认图标。");
+}
+
+async function handleIconUpload(event) {
+  const [file] = event.target.files;
+  if (!file) return;
+
+  if (!ACCEPTED_ICON_TYPES.has(file.type)) {
+    setIconStatus("请选择 PNG/JPG/WebP 图片。");
+    iconUpload.value = "";
+    return;
+  }
+
+  try {
+    setIconStatus("正在处理图标...");
+    const iconDataUrl = await createIconDataUrl(file);
+    localStorage.setItem(ICON_KEY, iconDataUrl);
+    applyIcon(iconDataUrl, "已更新自定义图标。");
+  } catch {
+    setIconStatus("图标保存失败，请换一张更小的图片。");
+  } finally {
+    iconUpload.value = "";
+  }
+}
+
+function createIconDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("图片读取失败"));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error("图片解析失败"));
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = ICON_CANVAS_SIZE;
+        canvas.height = ICON_CANVAS_SIZE;
+
+        const context = canvas.getContext("2d");
+        if (!context) {
+          reject(new Error("浏览器不支持图片处理"));
+          return;
+        }
+
+        const sourceSize = Math.min(image.naturalWidth, image.naturalHeight);
+        const sourceX = Math.max((image.naturalWidth - sourceSize) / 2, 0);
+        const sourceY = Math.max((image.naturalHeight - sourceSize) / 2, 0);
+
+        context.clearRect(0, 0, ICON_CANVAS_SIZE, ICON_CANVAS_SIZE);
+        context.drawImage(
+          image,
+          sourceX,
+          sourceY,
+          sourceSize,
+          sourceSize,
+          0,
+          0,
+          ICON_CANVAS_SIZE,
+          ICON_CANVAS_SIZE
+        );
+
+        resolve(canvas.toDataURL("image/png"));
+      };
+      image.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function applyIcon(src, statusText) {
+  appIcon.src = src;
+  updatePageIcons(src);
+  setIconStatus(statusText);
+}
+
+function updatePageIcons(src) {
+  document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((link) => {
+    link.href = src;
+  });
+}
+
+function setIconStatus(text) {
+  iconStatus.textContent = text;
+}
 
 async function loadData({ force = false } = {}) {
   setStatus("读取中");
